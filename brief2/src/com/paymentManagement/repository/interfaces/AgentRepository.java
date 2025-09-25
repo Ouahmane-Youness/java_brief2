@@ -1,6 +1,9 @@
 package com.paymentManagement.repository.interfaces;
 
+import com.paymentManagement.model.entity.Agent;
 import com.paymentManagement.model.enums.TypeAgent;
+
+import java.util.List;
 
 public interface AgentRepository {
     void save(Agent agent);

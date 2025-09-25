@@ -1,6 +1,10 @@
 package com.paymentManagement.repository.interfaces;
 
+import com.paymentManagement.model.entity.Paiement;
+import com.paymentManagement.model.enums.TypePaiement;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface PaimentInterface {
     void save(Paiement paiement);
