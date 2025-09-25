@@ -104,6 +104,51 @@ public class DepartementRepositoryImpl implements DepartementRepository {
 
         return null;
     }
+
+    @Override
+    public void update(Departement departement) {
+        try {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            String sql = "UPDATE departements SET nom = ? WHERE id_departement = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1, departement.getNom());
+            statement.setInt(2, departement.getIdDepartement());
+            statement.executeUpdate();
+
+            statement.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error updating departement: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean deleteById(Integer id) {
+        try {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            String sql = "DELETE FROM departements WHERE id_departement = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, id);
+            int rowsDeleted = statement.executeUpdate();
+
+            statement.close();
+
+            return rowsDeleted > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error deleting departement: " + e.getMessage());
+            return false;
+        }
+
+
+    }
+
+    public boolean existsById(Integer id) {
+        Departement departement = findById(id);
+        return departement != null;
+    }
 }
 
 
