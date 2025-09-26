@@ -6,6 +6,7 @@ public abstract class Personne {
     private String prenom;
     private String email;
     private String motDePasse;
+
     protected Personne() {
         // Default constructor intentionally empty
         // Subclasses will initialize fields through setters or other constructors
@@ -57,8 +58,7 @@ public abstract class Personne {
         if (prenom != null && nom != null) {
             return prenom + " " + nom;
 
-        }
-        else return "personne inconnu";
+        } else return "personne inconnu";
     }
 
 
@@ -69,6 +69,7 @@ public abstract class Personne {
                 prenom != null ? prenom : "null",
                 email != null ? email : "null");
     }
+}
 //
 //    @Override
 //    public boolean equals(Object obj) {

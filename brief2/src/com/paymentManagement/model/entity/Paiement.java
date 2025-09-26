@@ -1,5 +1,10 @@
 package com.paymentManagement.model.entity;
 
+import com.paymentManagement.model.enums.TypePaiement;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 public class Paiement {
     private Integer idPaiement;
     private TypePaiement typePaiement;

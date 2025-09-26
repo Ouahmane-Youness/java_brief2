@@ -1,17 +1,20 @@
 package com.paymentManagement.model.entity;
 
+import com.paymentManagement.model.enums.TypeAgent;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Agent extends Personne {
     Integer idAgent;
-    Departement departement;
-    Integer idDepartementId;
+    TypeAgent typeAgent;
+    Integer idDepartement;
     List<Paiement> paiements;
 
-    public Agent(String nom, String prenom, String email, String motDePasse, Integer idAgent, Departement departement, Integer idDepartementId, List<Paiement> paiements) {
+    public Agent(String nom, String prenom, String email, String motDePasse, Integer idAgent, TypeAgent typeAgent, Integer idDepartementId) {
         super(nom, prenom, email, motDePasse);
         this.idAgent = idAgent;
-        this.departement = departement;
+        this.typeAgent = typeAgent;
         this.idDepartement = idDepartementId;
         this.paiements = new ArrayList<>();
     }
@@ -42,15 +45,7 @@ public class Agent extends Personne {
         this.idAgent = idAgent;
     }
 
-    public Departement getDepartement() {
-        return departement;
-    }
-
-    public void setDepartement(Departement departement) {
-        this.departement = departement;
-    }
-
-    public Integer getIdDepartementId() {
+    public Integer getDepartementId() {
         return idDepartement;
     }
 

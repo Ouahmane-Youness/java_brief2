@@ -15,9 +15,9 @@ import java.util.List;
 public class DepartementRepositoryImpl implements DepartementRepository {
     @Override
     public void save(Departement departement) {
-        try{
+        try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
-            String sql = "INSERT INTO departement (nom) values (?)";
+            String sql = "INSERT INTO departements (nom) values (?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, departement.getNom());
             statement.executeUpdate();
@@ -29,15 +29,14 @@ public class DepartementRepositoryImpl implements DepartementRepository {
 
     @Override
     public Departement findById(Integer id) {
-        try{
+        try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
-            String sql = "select * from departement where departement.id = ?";
+            String sql = "select * from departements where departement.id = ?";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet resultSet = stmt.executeQuery();
 
-            if(resultSet.next())
-            {
+            if (resultSet.next()) {
                 Departement dep = new Departement(resultSet.getInt("id_departement"), resultSet.getString("nom"), resultSet.getInt("responsable_id"));
                 resultSet.close();
                 stmt.close();
@@ -56,25 +55,24 @@ public class DepartementRepositoryImpl implements DepartementRepository {
     @Override
     public List<Departement> findAll() {
         List<Departement> departements = new ArrayList<>();
-        try{
+        try {
 
             Connection connection = DatabaseConnection.getInstance().getConnection();
             String sql = "select * from departements";
             PreparedStatement stmt = connection.prepareStatement(sql);
             ResultSet resultSet = stmt.getResultSet();
-            while(resultSet.next())
-            {
+            while (resultSet.next()) {
                 Departement departement = new Departement(resultSet.getInt("id_departement"), resultSet.getString("nom"), resultSet.getInt("id_departement"));
                 departements.add(departement);
             }
             resultSet.close();
             stmt.close();
-            }catch (SQLException e){
-                System.out.println("Error getting deps" + e.getMessage());
-            }
+        } catch (SQLException e) {
+            System.out.println("Error getting deps" + e.getMessage());
+        }
         return departements;
 
-        }
+    }
 
     public Departement findByNom(String nom) {
         try {
@@ -86,9 +84,7 @@ public class DepartementRepositoryImpl implements DepartementRepository {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                Departement departement = new Departement();
-                departement.setIdDepartement(resultSet.getInt("id_departement"));
-                departement.setNom(resultSet.getString("nom"));
+                Departement departement = new Departement(resultSet.getInt("id_departement"), resultSet.getString("nom"), resultSet.getInt("responsable_id"));
 
                 resultSet.close();
                 statement.close();
