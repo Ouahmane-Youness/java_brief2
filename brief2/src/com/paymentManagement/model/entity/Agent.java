@@ -16,6 +16,24 @@ public class Agent extends Personne {
         this.paiements = new ArrayList<>();
     }
 
+
+    public Agent() {
+        super();
+        this.paiements = new ArrayList<>();
+    }
+
+    public void setTypeAgent(TypeAgent typeAgent) {
+        this.typeAgent = typeAgent;
+    }
+
+    public Integer getIdDepartement() {
+        return idDepartement;
+    }
+
+    public void setIdDepartement(Integer idDepartement) {
+        this.idDepartement = idDepartement;
+    }
+
     public Integer getIdAgent() {
         return idAgent;
     }
