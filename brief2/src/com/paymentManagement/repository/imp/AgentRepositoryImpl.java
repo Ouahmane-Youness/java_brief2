@@ -24,7 +24,7 @@ public class AgentRepositoryImpl implements AgentRepository {
         stmt.setString(2, agent.getPrenom());
         stmt.setString(3, agent.getEmail());
         stmt.setString(4, agent.getMotDePasse());
-        stmt.setString(5, agent.getTypeAgent().name());
+        stmt.setObject(5, agent.getTypeAgent().name(), Types.OTHER);
 
         if(agent.getDepartementId() != null)
         {
@@ -155,7 +155,7 @@ public class AgentRepositoryImpl implements AgentRepository {
             String sql = "SELECT * FROM agents WHERE type_agent = ? ORDER BY nom, prenom";
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setString(1, typeAgent.name()); // Convert enum to string
+            statement.setObject(1, typeAgent.name(), Types.OTHER); // Convert enum to string
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -183,7 +183,7 @@ public class AgentRepositoryImpl implements AgentRepository {
             statement.setString(2, agent.getPrenom());
             statement.setString(3, agent.getEmail());
             statement.setString(4, agent.getMotDePasse());
-            statement.setString(5, agent.getTypeAgent().name());
+            statement.setObject(5, agent.getTypeAgent().name(),  Types.OTHER);
 
             if (agent.getIdDepartement() != null) {
                 statement.setInt(6, agent.getIdDepartement());
@@ -211,7 +211,7 @@ public class AgentRepositoryImpl implements AgentRepository {
         agent.setEmail(resultSet.getString("email"));
         agent.setMotDePasse(resultSet.getString("mot_de_passe"));
         agent.setTypeAgent(TypeAgent.valueOf(typeAgent));
-        agent.setIdDepartementId(resultSet.getInt("id_departement"));
+        agent.setIdDepartement(resultSet.getInt("id_departement"));
 
         return agent;
     }
