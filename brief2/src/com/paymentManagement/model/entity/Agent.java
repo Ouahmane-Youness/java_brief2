@@ -47,4 +47,41 @@ public class Agent extends Personne {
     public void setPaiements(List<Paiement> paiements) {
         this.paiements = paiements;
     }
+
+
+    public void addPaiement(Paiement paiement)
+    {
+        if(paiements == null)
+        {
+            paiements = new ArrayList<>();
+        }
+
+        paiements.add(paiement);
+        paiement.setIdAgent(this.idAgent);
+    }
+    public int getNombrePaiements() {
+        return paiements != null ? paiements.size() : 0;
+    }
+
+    public void removePaiement(Paiement paiement)
+    {
+        this.paiements.remove(paiement);
+    }
+
+    @Override
+    public String toString() {
+        return "Agent{" +
+                "idAgent=" + idAgent +
+                ", nom='" + getNom() + '\'' +
+                ", prenom='" + getPrenom() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", typeAgent=" + typeAgent +
+                ", idDepartement=" + idDepartement +
+                ", nombrePaiements=" + getNombrePaiements() +
+                '}';
+    }
+
+    public TypeAgent getTypeAgent() {
+        return typeAgent;
+    }
 }
