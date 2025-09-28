@@ -75,5 +75,89 @@ public class DepartementServiceImpl implements DepartementService {
         return departementRepository.findAll();
     }
 
+    @Override
+    public void updateDepartement(Departement departement) {
+        if (departement == null || departement.getIdDepartement() == null) {
+            throw new IllegalArgumentException("Département invalide");
+        }
+
+        Departement existing = departementRepository.findById(departement.getIdDepartement());
+        if (existing == null) {
+            throw new IllegalArgumentException("Département non trouvé avec l'ID: " + departement.getIdDepartement());
+        }
+
+        if (!existing.getNom().equals(departement.getNom())) {
+            if (!isDepartementNameAvailable(departement.getNom())) {
+                throw new IllegalArgumentException("Un autre département utilise déjà ce nom: " + departement.getNom());
+            }
+        }
+
+        departement.setNom(departement.getNom().trim());
+
+        departementRepository.update(departement);
+        System.out.println("✓ Département mis à jour: " + departement.getNom());
+    }
+
+    @Override
+    public boolean deleteDepartement(Integer id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("L'ID du département doit être positif");
+        }
+
+        Departement departement = departementRepository.findById(id);
+        if (departement == null) {
+            System.out.println("Département non trouvé avec l'ID: " + id);
+            return false;
+        }
+
+        List<Agent> agents = agentRepository.findByDepartementId(id);
+        if (!agents.isEmpty()) {
+            throw new IllegalStateException("Impossible de supprimer le département '" + departement.getNom() +
+                    "' car il contient " + agents.size() + " agent(s). Réassignez d'abord les agents.");
+        }
+
+        boolean deleted = departementRepository.deleteById(id);
+        if (deleted) {
+            System.out.println("✓ Département supprimé: " + departement.getNom());
+        }
+        return deleted;
+    }
+
+    @Override
+    public boolean assignManager(Integer departementId, Integer managerId) {
+        if (departementId == null || managerId == null) {
+            throw new IllegalArgumentException("L'ID du département et du manager sont requis");
+        }
+        Departement departement = departementRepository.findById(departementId);
+
+        Agent agent = agentRepository.findById(managerId);
+        if (agent == null) {
+            throw new IllegalArgumentException("Agent non trouvé avec l'ID: " + managerId);
+        }
+        if(!canAgentManageDepartement(agent))
+        {
+            throw new IllegalArgumentException("L'agent " + agent.getNomComplet() +
+                    " (" + agent.getTypeAgent() + ") ne peut pas gérer un département");
+        }
+        departement.setResponsableId(managerId);
+        departementRepository.update(departement);
+        System.out.println("✓ " + agent.getNomComplet() + " assigné comme responsable de " + departement.getNom());
+        return true;
+
+    }
+
+
+    @Override
+    public boolean canAgentManageDepartement(Agent agent) {
+        return agent.getTypeAgent() == TypeAgent.RESPONSABLE_DEPARTEMENT ||
+                agent.getTypeAgent() == TypeAgent.DIRECTEUR;
+
+    }
+
+    @Override
+    public List<Agent> getAgentsInDepartement(Integer departementId) {
+        if (departementId == null) {
+            throw new IllegalArgumentException("L'ID du département est requis");
+        }
 
 }
