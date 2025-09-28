@@ -81,6 +81,14 @@ public class Agent extends Personne {
         this.paiements.remove(paiement);
     }
 
+    public boolean isEligibleForBonus() {
+        return typeAgent == TypeAgent.RESPONSABLE_DEPARTEMENT || typeAgent == TypeAgent.DIRECTEUR;
+    }
+
+    public boolean isEligibleForIndemnity() {
+        return typeAgent == TypeAgent.RESPONSABLE_DEPARTEMENT || typeAgent == TypeAgent.DIRECTEUR;
+    }
+
     @Override
     public String toString() {
         return "Agent{" +
