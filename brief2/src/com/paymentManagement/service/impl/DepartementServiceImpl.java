@@ -160,4 +160,12 @@ public class DepartementServiceImpl implements DepartementService {
             throw new IllegalArgumentException("L'ID du département est requis");
         }
 
+        return agentRepository.findByDepartementId(departementId);
+    }
+
+    @Override
+    public int getAgentCount(Integer departementId) {
+        List<Agent> agents = getAgentsInDepartement(departementId);
+        return agents.size();
+    }
 }
