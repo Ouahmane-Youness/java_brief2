@@ -15,7 +15,7 @@ public interface DepartementService {
 
     // Business logic operations
     boolean assignManager(Integer departementId, Integer managerId);
-    boolean removeManager(Integer departementId);
+    //boolean removeManager(Integer departementId);
     List<Agent> getAgentsInDepartement(Integer departementId);
     int getAgentCount(Integer departementId);
     boolean isDepartementNameAvailable(String nom);

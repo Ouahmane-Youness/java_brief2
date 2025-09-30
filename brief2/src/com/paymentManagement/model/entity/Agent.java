@@ -109,6 +109,7 @@ public class Agent extends Personne {
                 '}';
     }
 
+
     public TypeAgent getTypeAgent() {
         return typeAgent;
     }

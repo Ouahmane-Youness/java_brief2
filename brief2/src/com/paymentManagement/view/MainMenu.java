@@ -11,6 +11,6 @@ public class MainMenu {
     public MainMenu()
     {
         this.agentService = new AgentServiceImpl();
-        this.inputHandler = new InputHangler();
+        this.inputHandler = new InputHandler();
     }
 }

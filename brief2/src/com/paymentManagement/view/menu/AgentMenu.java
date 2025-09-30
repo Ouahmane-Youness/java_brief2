@@ -2,14 +2,11 @@ package com.paymentManagement.view.menu;
 
 import com.paymentManagement.model.entity.Agent;
 import com.paymentManagement.model.entity.Departement;
-import com.paymentManagement.model.enums.TypeAgent;
-import com.paymentManagement.repository.interfaces.DepartementRepository;
 import com.paymentManagement.service.impl.AgentServiceImpl;
 import com.paymentManagement.service.impl.DepartementServiceImpl;
-import com.paymentManagement.service.interfaces.DepartementService;
 import com.paymentManagement.view.InputHandler;
 
-import java.util.Scanner;
+import java.util.List;
 
 public class AgentMenu {
 
@@ -41,7 +38,7 @@ public class AgentMenu {
                     break;
 
                 case 2:
-                    showMyDepartement();
+                    showMyDepartement(loggedInAgent);
                     break;
 
                 case 3:
@@ -67,8 +64,6 @@ public class AgentMenu {
                     break;
                 default:
                     System.out.println("choix invalide");
-
-
 
 
             }
@@ -115,20 +110,55 @@ public class AgentMenu {
 
 
 
-    private void getAgentDep(Agent loggedInAgent)
+    private void showMyDepartement(Agent loggedInAgent)
     {
         try{
              Departement departement = departementService.findDepartementById(loggedInAgent.getIdAgent());
              if(departement == null)
              {
                  System.out.println("department not found");
-                 return
+                 return;
              }
-            System.out.println("departement :" departement.getNom());
+            System.out.println("departement :" + departement.getNom());
 
              //show Manager
             Agent responsable = agentService.findAgentById(departement.getResponsableId());
             System.out.println("Responsable departement : " + responsable.getNom());
+
+        }catch(Exception e)
+        {
+            System.out.println("❌ Erreur lors de la récupération du département: " + e.getMessage());
+        }
+    }
+
+
+    private void showAllAgents()
+    {
+        System.out.println("\n" + "-".repeat(50));
+        System.out.println("              TOUS LES AGENTS");
+        System.out.println("-".repeat(50));
+
+        try {
+            List<Agent> agents = agentService.getAllAgents();
+            if(agents.isEmpty())
+            {
+                System.out.println("❌ Aucun agent trouvé dans le système.");
+                return;
+            }
+            List<Agent> agentsByCurrentDepartement = agents.stream().filter(agent -> agent.getDepartementId().equals(loggedInAgent.getIdDepartement())).toList();
+            if(agentsByCurrentDepartement.isEmpty())
+            {
+                System.out.println("❌ Aucun agent trouvé fait partie de la departement dans le système.");
+                return;
+            }
+            for(Agent agent : agentsByCurrentDepartement)
+            {
+                System.out.println(agent);
+            }
+
+        }catch (Exception e)
+        {
+            System.out.println("❌ Erreur lors de la récupération des agents: " + e.getMessage());
 
         }
     }

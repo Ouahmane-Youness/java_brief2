@@ -1,6 +1,8 @@
 package com.paymentManagement.service.impl;
 
+import com.paymentManagement.model.entity.Agent;
 import com.paymentManagement.model.entity.Departement;
+import com.paymentManagement.model.enums.TypeAgent;
 import com.paymentManagement.repository.interfaces.AgentRepository;
 import com.paymentManagement.repository.interfaces.DepartementRepository;
 import com.paymentManagement.service.interfaces.DepartementService;
@@ -47,7 +49,7 @@ public class DepartementServiceImpl implements DepartementService {
         {
             return false;
         }
-        Departement dep = this.departementRepository.findByNom(nom.trim())
+        Departement dep = this.departementRepository.findByNom(nom.trim());
         return dep == null;
     }
 

@@ -11,17 +11,17 @@ public interface AgentService {
     Agent findAgentByEmail(String email);
     List<Agent> getAllAgents();
     void updateAgent(Agent agent);
-    boolean deleteAgent(Integer id);
+    //boolean deleteAgent(Integer id);
 
     // Authentication
     Agent authenticate(String email, String password);
-    boolean changePassword(Integer agentId, String oldPassword, String newPassword);
+    //boolean changePassword(Integer agentId, String oldPassword, String newPassword);
 
     // Department operations
     boolean assignToDepartment(Integer agentId, Integer departmentId);
-    boolean removeFromDepartment(Integer agentId);
+    //boolean removeFromDepartment(Integer agentId);
     List<Agent> getAgentsByDepartment(Integer departmentId);
-    List<Agent> getAgentsWithoutDepartment();
+   // List<Agent> getAgentsWithoutDepartment();
 
     // Type and role operations
     List<Agent> getAgentsByType(TypeAgent type);
