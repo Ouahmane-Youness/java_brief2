@@ -11,6 +11,9 @@ public class Departement {
         this.responsableId = responsableId;
     }
 
+    public Departement() {
+    }
+
     public Departement(String nom) {
         this.nom = nom;
     }
