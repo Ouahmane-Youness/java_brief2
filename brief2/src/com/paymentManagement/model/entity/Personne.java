@@ -2,10 +2,10 @@ package com.paymentManagement.model.entity;
 
 public abstract class Personne {
 
-    private String nom;
-    private String prenom;
-    private String email;
-    private String motDePasse;
+    protected String nom;
+    protected String prenom;
+    protected String email;
+    protected String motDePasse;
 
     protected Personne() {
         // Default constructor intentionally empty
