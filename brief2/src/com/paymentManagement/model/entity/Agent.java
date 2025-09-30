@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Agent extends Personne {
-    Integer idAgent;
-    TypeAgent typeAgent;
-    Integer idDepartement;
-    List<Paiement> paiements;
+    private Integer idAgent;
+    private TypeAgent typeAgent;
+    private Integer idDepartement;
+    private List<Paiement> paiements;
 
     public Agent(String nom, String prenom, String email, String motDePasse, Integer idAgent, TypeAgent typeAgent, Integer idDepartementId) {
         super(nom, prenom, email, motDePasse);
