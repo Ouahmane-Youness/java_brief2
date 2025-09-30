@@ -19,6 +19,13 @@ public class Agent extends Personne {
         this.paiements = new ArrayList<>();
     }
 
+    public Agent(String nom, String prenom, String email, String motDePasse, TypeAgent typeAgent) {
+        super(nom, prenom, email, motDePasse);
+        this.typeAgent = typeAgent;
+        this.paiements = new ArrayList<>();
+    }
+
+
 
     public Agent() {
         super();
