@@ -3,6 +3,8 @@ package com.paymentManagement.service.impl;
 import com.paymentManagement.model.entity.Agent;
 import com.paymentManagement.model.entity.Departement;
 import com.paymentManagement.model.enums.TypeAgent;
+import com.paymentManagement.repository.imp.AgentRepositoryImpl;
+import com.paymentManagement.repository.imp.DepartementRepositoryImpl;
 import com.paymentManagement.repository.interfaces.AgentRepository;
 import com.paymentManagement.repository.interfaces.DepartementRepository;
 import com.paymentManagement.service.interfaces.DepartementService;
@@ -13,32 +15,32 @@ public class DepartementServiceImpl implements DepartementService {
     private final DepartementRepository departementRepository;
     private final AgentRepository agentRepository;
 
-    public DepartementServiceImpl(DepartementRepository departementRepository, AgentRepository agentRepository) {
-        this.departementRepository = departementRepository;
-        this.agentRepository = agentRepository;
+    public DepartementServiceImpl() {
+        this.departementRepository = new DepartementRepositoryImpl();
+        this.agentRepository = new AgentRepositoryImpl();
     }
 
     @Override
     public Departement createDepartement(String nom) {
         if(nom == null || nom.trim().isEmpty())
         {
-            throw new IllegalArgumentException("Le nom du département ne peut pas être vide");
+            throw new IllegalArgumentException("Le nom du dÃ©partement ne peut pas Ãªtre vide");
         }
 
         if(!isDepartementNameAvailable(nom))
         {
-            throw new IllegalArgumentException("Un département avec ce nom existe déjà: " + nom);
+            throw new IllegalArgumentException("Un dÃ©partement avec ce nom existe dÃ©jÃ : " + nom);
         }
         String cleanName = nom.trim();
         if(cleanName.length()<2)
         {
-            throw new IllegalArgumentException("Le nom du département doit contenir au moins 2 caractères");
+            throw new IllegalArgumentException("Le nom du dÃ©partement doit contenir au moins 2 caractÃ¨res");
 
         }
 
         Departement departement = new Departement(nom);
         this.departementRepository.save(departement);
-        System.out.println("✓ Département créé: " + cleanName);
+        System.out.println("âœ“ DÃ©partement crÃ©Ã©: " + cleanName);
         return departement;
 
     }
@@ -57,7 +59,7 @@ public class DepartementServiceImpl implements DepartementService {
     public Departement findDepartementById(Integer id) {
         if(id == null || id < 1)
         {
-            throw new IllegalArgumentException("L'ID du département doit être positif");
+            throw new IllegalArgumentException("L'ID du dÃ©partement doit Ãªtre positif");
         }
         return this.departementRepository.findById(id);
     }
@@ -66,7 +68,7 @@ public class DepartementServiceImpl implements DepartementService {
     public Departement findDepartementByNom(String nom) {
         if(nom == null || nom.trim().isEmpty())
         {
-            throw new IllegalArgumentException("Le nom du département ne peut pas être vide");
+            throw new IllegalArgumentException("Le nom du dÃ©partement ne peut pas Ãªtre vide");
 
         }
         return this.departementRepository.findByNom(nom);
@@ -80,47 +82,47 @@ public class DepartementServiceImpl implements DepartementService {
     @Override
     public void updateDepartement(Departement departement) {
         if (departement == null || departement.getIdDepartement() == null) {
-            throw new IllegalArgumentException("Département invalide");
+            throw new IllegalArgumentException("DÃ©partement invalide");
         }
 
         Departement existing = departementRepository.findById(departement.getIdDepartement());
         if (existing == null) {
-            throw new IllegalArgumentException("Département non trouvé avec l'ID: " + departement.getIdDepartement());
+            throw new IllegalArgumentException("DÃ©partement non trouvÃ© avec l'ID: " + departement.getIdDepartement());
         }
 
         if (!existing.getNom().equals(departement.getNom())) {
             if (!isDepartementNameAvailable(departement.getNom())) {
-                throw new IllegalArgumentException("Un autre département utilise déjà ce nom: " + departement.getNom());
+                throw new IllegalArgumentException("Un autre dÃ©partement utilise dÃ©jÃ  ce nom: " + departement.getNom());
             }
         }
 
         departement.setNom(departement.getNom().trim());
 
         departementRepository.update(departement);
-        System.out.println("✓ Département mis à jour: " + departement.getNom());
+        System.out.println("âœ“ DÃ©partement mis Ã  jour: " + departement.getNom());
     }
 
     @Override
     public boolean deleteDepartement(Integer id) {
         if (id == null || id <= 0) {
-            throw new IllegalArgumentException("L'ID du département doit être positif");
+            throw new IllegalArgumentException("L'ID du dÃ©partement doit Ãªtre positif");
         }
 
         Departement departement = departementRepository.findById(id);
         if (departement == null) {
-            System.out.println("Département non trouvé avec l'ID: " + id);
+            System.out.println("DÃ©partement non trouvÃ© avec l'ID: " + id);
             return false;
         }
 
         List<Agent> agents = agentRepository.findByDepartementId(id);
         if (!agents.isEmpty()) {
-            throw new IllegalStateException("Impossible de supprimer le département '" + departement.getNom() +
-                    "' car il contient " + agents.size() + " agent(s). Réassignez d'abord les agents.");
+            throw new IllegalStateException("Impossible de supprimer le dÃ©partement '" + departement.getNom() +
+                    "' car il contient " + agents.size() + " agent(s). RÃ©assignez d'abord les agents.");
         }
 
         boolean deleted = departementRepository.deleteById(id);
         if (deleted) {
-            System.out.println("✓ Département supprimé: " + departement.getNom());
+            System.out.println("âœ“ DÃ©partement supprimÃ©: " + departement.getNom());
         }
         return deleted;
     }
@@ -128,22 +130,22 @@ public class DepartementServiceImpl implements DepartementService {
     @Override
     public boolean assignManager(Integer departementId, Integer managerId) {
         if (departementId == null || managerId == null) {
-            throw new IllegalArgumentException("L'ID du département et du manager sont requis");
+            throw new IllegalArgumentException("L'ID du dÃ©partement et du manager sont requis");
         }
         Departement departement = departementRepository.findById(departementId);
 
         Agent agent = agentRepository.findById(managerId);
         if (agent == null) {
-            throw new IllegalArgumentException("Agent non trouvé avec l'ID: " + managerId);
+            throw new IllegalArgumentException("Agent non trouvÃ© avec l'ID: " + managerId);
         }
         if(!canAgentManageDepartement(agent))
         {
             throw new IllegalArgumentException("L'agent " + agent.getNomComplet() +
-                    " (" + agent.getTypeAgent() + ") ne peut pas gérer un département");
+                    " (" + agent.getTypeAgent() + ") ne peut pas gÃ©rer un dÃ©partement");
         }
         departement.setResponsableId(managerId);
         departementRepository.update(departement);
-        System.out.println("✓ " + agent.getNomComplet() + " assigné comme responsable de " + departement.getNom());
+        System.out.println("âœ“ " + agent.getNomComplet() + " assignÃ© comme responsable de " + departement.getNom());
         return true;
 
     }
@@ -159,7 +161,7 @@ public class DepartementServiceImpl implements DepartementService {
     @Override
     public List<Agent> getAgentsInDepartement(Integer departementId) {
         if (departementId == null) {
-            throw new IllegalArgumentException("L'ID du département est requis");
+            throw new IllegalArgumentException("L'ID du dÃ©partement est requis");
         }
 
         return agentRepository.findByDepartementId(departementId);
