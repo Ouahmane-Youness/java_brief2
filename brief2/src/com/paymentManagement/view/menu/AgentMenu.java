@@ -78,20 +78,20 @@ public class AgentMenu {
         }
     }
 
-    private void displayAgentMenu() {
-        System.out.println("\n" + "=".repeat(50));
+    private void displayAgentMenu()
+    {
+        System.out.println("\n" + "=".repeat(50) );
         System.out.println("Menu Agent - " + loggedInAgent.getNom());
-        System.out.println("Fonction: " + loggedInAgent.getTypeAgent());
-        System.out.println("=".repeat(50));
+        System.out.println("fonction:" + loggedInAgent.getTypeAgent());
+        System.out.println("\n" + "=".repeat(50) );
         System.out.println("1. Mon profil");
-        System.out.println("2. Mon département");
-        System.out.println("3. Mes paiements");
-        System.out.println("4. Filtres et statistiques");
+        System.out.println("2. mon departement");
 
-        if (loggedInAgent.getTypeAgent().name().contains("RESPONSABLE") ||
-                loggedInAgent.getTypeAgent().name().contains("DIRECTEUR")) {
-            System.out.println("5. Voir tous les agents");
-            System.out.println("6. Options de Gestion");
+        if(loggedInAgent.getTypeAgent().name().contains("RESPONSABLE") ||
+                loggedInAgent.getTypeAgent().name().contains("DIRECTEUR"))
+        {
+            System.out.println("3. voir tous les agents");
+            System.out.println("4. Options de Gestion");
         }
 
         System.out.println("0. Déconnexion");
@@ -111,44 +111,44 @@ public class AgentMenu {
         inputHandler.waitForEnter("\nAppuyez sur Entrée pour continuer...");
     }
 
-    private void showMyDepartement(Agent loggedInAgent) {
-        try {
-            if (loggedInAgent.getIdDepartement() == null) {
-                System.out.println("\nVous n'êtes pas assigné à un département.");
-                inputHandler.waitForEnter("\nAppuyez sur Entrée pour continuer...");
+    private void showMyDepartement(Agent loggedInAgent)
+    {
+        try{
+            if(loggedInAgent.getIdDepartement() == null) {
+                System.out.println(" Vous n'êtes pas assigné à un département.");
+                inputHandler.waitForEnter("Appuyez sur Entrée pour continuer.");
                 return;
             }
 
             Departement departement = departementService.findDepartementById(loggedInAgent.getIdDepartement());
 
-            if (departement == null) {
-                System.out.println("\nDépartement non trouvé.");
-                inputHandler.waitForEnter("\nAppuyez sur Entrée pour continuer...");
+            if(departement == null)
+            {
+                System.out.println(" Département not found");
+                inputHandler.waitForEnter("Appuyez sur Entrée pour continuer.");
                 return;
             }
 
-            System.out.println("\n--- Mon Département ---");
             System.out.println("Département: " + departement.getNom());
 
-            if (departement.getResponsableId() != null) {
+            // Show Manager
+            if(departement.getResponsableId() != null) {
                 Agent responsable = agentService.findAgentById(departement.getResponsableId());
-                if (responsable != null) {
-                    System.out.println("Responsable: " + responsable.getNomComplet());
+                if(responsable != null) {
+                    System.out.println("Responsable département: " + responsable.getNomComplet());
                 } else {
-                    System.out.println("Responsable: Aucun");
+                    System.out.println("Responsable département: Aucun");
                 }
             } else {
-                System.out.println("Responsable: Aucun");
+                System.out.println("Responsable département: Aucun");
             }
 
-            int agentCount = departementService.getAgentCount(departement.getIdDepartement());
-            System.out.println("Nombre d'agents: " + agentCount);
+            inputHandler.waitForEnter("\nAppuyez sur Entrée pour continuer.");
 
-            inputHandler.waitForEnter("\nAppuyez sur Entrée pour continuer...");
-
-        } catch (Exception e) {
-            System.out.println("Erreur lors de la récupération du département: " + e.getMessage());
-            inputHandler.waitForEnter("\nAppuyez sur Entrée pour continuer...");
+        }catch(Exception e)
+        {
+            System.out.println(" Erreur lors de la récupération du département: " + e.getMessage());
+            inputHandler.waitForEnter("Appuyez sur Entrée pour continuer.");
         }
     }
 

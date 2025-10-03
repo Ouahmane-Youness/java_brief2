@@ -12,7 +12,7 @@ public class InputHandler {
     public String getStringInput(String prompt)
     {
         System.out.println(prompt);
-        return scanner.next().trim();
+        return scanner.nextLine().trim();
     }
 
     public int getIntInput(String prompt){
@@ -20,11 +20,11 @@ public class InputHandler {
         {
             try{
                 System.out.println(prompt);
-                String input = scanner.next().trim();
+                String input = scanner.nextLine().trim(); // Changed from scanner.next()
                 return Integer.parseInt(input);
             }catch (NumberFormatException e)
             {
-                System.out.println("❌ Veuillez entrer un nombre valide!");
+                System.out.println(" Veuillez entrer un nombre valide!");
             }
         }
     }

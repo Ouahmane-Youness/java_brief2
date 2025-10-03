@@ -114,12 +114,6 @@ public class Main {
                 case 1:
                     handleLogin();
                     break;
-                case 2:
-                    displaySystemInfo();
-                    break;
-                case 3:
-                    displayAbout();
-                    break;
                 case 0:
                     running = false;
                     break;
@@ -135,8 +129,6 @@ public class Main {
         System.out.println("                    MENU PRINCIPAL");
         System.out.println("=".repeat(60));
         System.out.println("  1. Connexion");
-        System.out.println("  2. Informations Systeme");
-        System.out.println("  3. A Propos");
         System.out.println("  0. Quitter");
         System.out.println("=".repeat(60));
     }
@@ -223,78 +215,7 @@ public class Main {
         System.out.println();
     }
 
-    private static void displaySystemInfo() {
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("              INFORMATIONS SYSTEME");
-        System.out.println("=".repeat(60));
 
-        try {
-            var allAgents = agentService.getAllAgents();
-            var allDepartments = departementService.getAllDepartements();
-
-            System.out.println("\nSTATISTIQUES GLOBALES:");
-            System.out.println("  Nombre total d'agents: " + allAgents.size());
-            System.out.println("  Nombre de departements: " + allDepartments.size());
-
-            if (!allDepartments.isEmpty()) {
-                System.out.println("\nDEPARTEMENTS:");
-                for (Departement dept : allDepartments) {
-                    int count = departementService.getAgentCount(dept.getIdDepartement());
-                    System.out.println("  - " + dept.getNom() + ": " + count + " agent(s)");
-                }
-            }
-
-            if (!allAgents.isEmpty()) {
-                System.out.println("\nREPARTITION PAR TYPE:");
-                System.out.println("  - Ouvriers: " + agentService.getAgentsByType(TypeAgent.OUVRIER).size());
-                System.out.println("  - Responsables: " +
-                        agentService.getAgentsByType(TypeAgent.RESPONSABLE_DEPARTEMENT).size());
-                System.out.println("  - Directeurs: " + agentService.getAgentsByType(TypeAgent.DIRECTEUR).size());
-                System.out.println("  - Stagiaires: " + agentService.getAgentsByType(TypeAgent.STAGIAIRE).size());
-            }
-
-            System.out.println("\nINFORMATION:");
-            System.out.println("Pour acceder au systeme complet, connectez-vous");
-            System.out.println("avec votre email et mot de passe.");
-
-        } catch (Exception e) {
-            System.out.println("\nErreur lors de la recuperation des informations: " + e.getMessage());
-        }
-
-        waitForEnter();
-    }
-
-    private static void displayAbout() {
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("                    A PROPOS");
-        System.out.println("=".repeat(60));
-        System.out.println("\nSYSTEME DE GESTION DES PAIEMENTS");
-        System.out.println("Version: 1.0");
-        System.out.println();
-        System.out.println("Description:");
-        System.out.println("  Application de gestion des agents, departements et paiements.");
-        System.out.println("  Permet le suivi complet des paiements avec statistiques");
-        System.out.println("  detaillees et detection d'anomalies.");
-        System.out.println();
-        System.out.println("Fonctionnalites principales:");
-        System.out.println("  - Gestion des agents et departements");
-        System.out.println("  - Gestion des paiements (Salaire, Prime, Bonus, Indemnite)");
-        System.out.println("  - Filtrage et tri des paiements");
-        System.out.println("  - Statistiques par agent et departement");
-        System.out.println("  - Statistiques globales de l'entreprise");
-        System.out.println("  - Detection des paiements inhabituels");
-        System.out.println();
-        System.out.println("Technologies:");
-        System.out.println("  - Java (POO, Collections, Streams API)");
-        System.out.println("  - JDBC pour la persistance");
-        System.out.println("  - Architecture MVC");
-        System.out.println();
-        System.out.println("Developpe par: [Votre Nom]");
-        System.out.println("Date: 2025");
-        System.out.println();
-
-        waitForEnter();
-    }
 
     private static void printGoodbyeMessage() {
         System.out.println("\n" + "=".repeat(60));

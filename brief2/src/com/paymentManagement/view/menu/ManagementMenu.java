@@ -157,6 +157,7 @@ public class ManagementMenu {
                 return;
             }
 
+            // Collect agent information
             String nom = inputHandler.getStringInput("Nom: ");
             String prenom = inputHandler.getStringInput("Prénom: ");
             String email = inputHandler.getStringInput("Email: ");
@@ -190,7 +191,7 @@ public class ManagementMenu {
 
             Departement selectedDept = departementService.findDepartementById(deptId);
             if (selectedDept == null) {
-                System.out.println("Département invalide!");
+                System.out.println(" Département invalide! L'ID " + deptId + " n'existe pas.");
                 inputHandler.waitForEnter("\nAppuyez sur Entrée pour continuer...");
                 return;
             }
@@ -199,14 +200,14 @@ public class ManagementMenu {
 
             agentService.assignToDepartment(newAgent.getIdAgent(), deptId);
 
-            System.out.println("\nAgent créé avec succès!");
+            System.out.println("\n Agent créé avec succès!");
             System.out.println("   ID: " + newAgent.getIdAgent());
             System.out.println("   Nom: " + newAgent.getNomComplet());
             System.out.println("   Type: " + typeAgent);
             System.out.println("   Département: " + selectedDept.getNom());
 
         } catch (Exception e) {
-            System.out.println("Erreur: " + e.getMessage());
+            System.out.println(" Erreur: " + e.getMessage());
         }
 
         inputHandler.waitForEnter("\nAppuyez sur Entrée pour continuer...");
@@ -301,8 +302,18 @@ public class ManagementMenu {
                     String newPrenom = inputHandler.getStringInput("Nouveau prénom [" + agent.getPrenom() + "]: ");
                     if (!newPrenom.isEmpty()) agent.setPrenom(newPrenom);
 
+                    String newEmail = inputHandler.getStringInput("Nouvel email [" + agent.getEmail() + "]: ");
+                    if (!newEmail.isEmpty()) {
+                        Agent existingAgent = agentService.findAgentByEmail(newEmail);
+                        if (existingAgent != null && !existingAgent.getIdAgent().equals(agent.getIdAgent())) {
+                            System.out.println(" Cet email est déjà utilisé par un autre agent!");
+                            break;
+                        }
+                        agent.setEmail(newEmail);
+                    }
+
                     agentService.updateAgent(agent);
-                    System.out.println("Agent modifié avec succès!");
+                    System.out.println(" Agent modifié avec succès!");
                     break;
 
                 case 2:

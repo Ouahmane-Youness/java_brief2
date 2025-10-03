@@ -130,24 +130,30 @@ public class DepartementServiceImpl implements DepartementService {
     @Override
     public boolean assignManager(Integer departementId, Integer managerId) {
         if (departementId == null || managerId == null) {
-            throw new IllegalArgumentException("L'ID du dÃ©partement et du manager sont requis");
+            throw new IllegalArgumentException("L'ID du département et du manager sont requis");
         }
+
+        // FIX: Add null check for department
         Departement departement = departementRepository.findById(departementId);
+        if (departement == null) {
+            throw new IllegalArgumentException("Département non trouvé avec l'ID: " + departementId);
+        }
 
         Agent agent = agentRepository.findById(managerId);
         if (agent == null) {
-            throw new IllegalArgumentException("Agent non trouvÃ© avec l'ID: " + managerId);
+            throw new IllegalArgumentException("Agent non trouvé avec l'ID: " + managerId);
         }
+
         if(!canAgentManageDepartement(agent))
         {
             throw new IllegalArgumentException("L'agent " + agent.getNomComplet() +
-                    " (" + agent.getTypeAgent() + ") ne peut pas gÃ©rer un dÃ©partement");
+                    " (" + agent.getTypeAgent() + ") ne peut pas gérer un département");
         }
+
         departement.setResponsableId(managerId);
         departementRepository.update(departement);
-        System.out.println("âœ“ " + agent.getNomComplet() + " assignÃ© comme responsable de " + departement.getNom());
+        System.out.println(" " + agent.getNomComplet() + " assigné comme responsable de " + departement.getNom());
         return true;
-
     }
 
 
